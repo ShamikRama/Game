@@ -1,0 +1,12 @@
+http_server:
+  address: "0.0.0.0:8082"  # Исправлено: теперь сервер будет доступен извне контейнера
+  timeout: 4s
+  idle_timeout: 60s
+
+database:
+  host: "db"  # Имя сервиса базы данных из docker-compose.yml
+  port: 5432  # Порт внутри контейнера
+  user: "task"
+  password: "task"
+  dbname: "task"
+  sslmode: "disable"
