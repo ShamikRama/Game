@@ -15,6 +15,7 @@ func main() {
 		log.Error("failed to connect storage", "error", err)
 		os.Exit(1)
 	}
+	_ = db
 
 }
 
