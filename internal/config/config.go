@@ -28,19 +28,24 @@ type Database struct {
 }
 
 func MustLoad() *Config {
-	configPath := "app/config/local.yaml"
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = "/app/config/config.yaml" // Путь по умолчанию
+	}
+
 	_, err := os.Stat(configPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			log.Fatalf("no such path %s", configPath)
+			log.Fatalf("нет такого пути %s", configPath)
 		}
+		log.Fatalf("ошибка доступа к файлу конфигурации: %v", err)
 	}
 
 	var cfg Config
 
 	err = cleanenv.ReadConfig(configPath, &cfg)
 	if err != nil {
-		log.Fatalf("can not read the config %s", configPath)
+		log.Fatalf("не могу прочитать конфиг %s", configPath)
 	}
 
 	return &cfg

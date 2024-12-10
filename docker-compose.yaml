@@ -20,4 +20,6 @@ services:
       - ./config/config.yaml:/app/config/config.yaml  # Монтируем config.yaml в контейнер
     environment:
       CONFIG_PATH: /app/config/config.yaml  # Переменная окружения для указания пути к конфигу
+    ports:
+      - "8082:8082"  # Выделение порта для приложения
     command: ["./myapp"]  # Исправлено: теперь используется собранное приложение
