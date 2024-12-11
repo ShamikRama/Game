@@ -44,3 +44,23 @@ func (r *AuthPsql) Create(user models.User) (int, error) {
 
 	return id, nil
 }
+
+func (r *AuthPsql) GetUser(username, password string) (models.User, error) {
+	const op = "sql.Auth.GetUser"
+
+	var user models.User
+	query := fmt.Sprintf("SELECT id, username, password_hash, points FROM %s WHERE username = $1 AND password_hash = $2", userTable)
+
+	stmt, err := r.db.Prepare(query)
+	if err != nil {
+		return user, fmt.Errorf("%s: failed to prepare statement: %w", op, err)
+	}
+	defer stmt.Close()
+
+	err = stmt.QueryRow(username, password).Scan(&user.Id, &user.Username, &user.Password, &user.Points)
+	if err != nil {
+		return user, fmt.Errorf("%s: failed to execute query: %w", op, err)
+	}
+
+	return user, nil
+}

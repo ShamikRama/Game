@@ -8,11 +8,11 @@ import (
 )
 
 type Config struct {
-	HTTPServer HTTPServerConfig `yaml:"http_server"`
-	Database   Database         `yaml:"database"`
+	HTTPServer HTTPServer `yaml:"http_server"`
+	Database   Database   `yaml:"database"`
 }
 
-type HTTPServerConfig struct {
+type HTTPServer struct {
 	Address     string        `yaml:"address"`
 	Timeout     time.Duration `yaml:"timeout"`
 	IdleTimeout time.Duration `yaml:"idle_timeout"`

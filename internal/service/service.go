@@ -18,4 +18,6 @@ func NewService(repo *repository.Repository) *Service {
 
 type Authorization interface {
 	Create(user models.User) (int, error)
+	GenerateJwtToken(username string, password string) (string, error)
+	ParseToken(accessToken string) (int, error)
 }

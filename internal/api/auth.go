@@ -19,7 +19,7 @@ func (h *Handlers) SignUp(c *gin.Context) {
 		Password: input.Password,
 	}
 
-	id, err := h.services.Create(user) // Передаем user
+	id, err := h.services.Create(user)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "internal error")
 		return
@@ -28,4 +28,23 @@ func (h *Handlers) SignUp(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})
+}
+
+func (h *Handlers) SignIn(c *gin.Context) {
+	var input models.Login
+	err := c.BindJSON(&input)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "bad request")
+		return
+	}
+	token, err := h.services.Authorization.GenerateJwtToken(input.Username, input.Password)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "internal error")
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
+	})
+
 }
