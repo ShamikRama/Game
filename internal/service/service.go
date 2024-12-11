@@ -1,17 +1,21 @@
 package service
 
-import "Game/internal/models"
+import (
+	"Game/internal/models"
+	"Game/internal/repository"
+	"Game/internal/service/auth"
+)
 
 type Service struct {
 	Authorization
 }
 
-func NewService() Service {
+func NewService(repo *repository.Repository) *Service {
 	return &Service{
-		Authorization(),
+		Authorization: auth.NewAuthorizationService(repo.Authorization),
 	}
 }
 
 type Authorization interface {
-	Create(user models.Login) (int, error)
+	Create(user models.User) (int, error)
 }

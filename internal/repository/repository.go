@@ -17,5 +17,5 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 type Authorization interface {
-	Create(login models.Login) (int, error)
+	Create(user models.User) (int, error)
 }

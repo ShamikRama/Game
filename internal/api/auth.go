@@ -14,7 +14,12 @@ func (h *Handlers) SignUp(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.Create(input) // Передаем user
+	user := models.User{
+		Username: input.Username,
+		Password: input.Password,
+	}
+
+	id, err := h.services.Create(user) // Передаем user
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "internal error")
 		return
