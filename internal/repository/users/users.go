@@ -46,7 +46,7 @@ func (r *UserPsql) GetUser(userID int) (models.User, error) {
 func (r *UserPsql) GetLeaders() ([]models.User, error) {
 	const op = "sql.Users.GetLeaders"
 
-	var users []models.User
+	users := make([]models.User, 0, 5)
 	query := fmt.Sprintf("SELECT id, username, points FROM %s ORDER BY points DESC LIMIT 5", userTable)
 
 	stmt, err := r.db.Prepare(query)

@@ -22,3 +22,7 @@ func (r *UserService) GetUserStatus(userID int) (models.User, error) {
 func (r *UserService) GetUsersLeaders() ([]models.User, error) {
 	return r.repo.GetLeaders()
 }
+
+// TODO func (r *UserService) TaskTelegram()
+
+// TODO func (r *UserService) TaskReferal()
