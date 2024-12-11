@@ -13,7 +13,7 @@ func (h *Handlers) SignUp(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "bad request")
 		return
 	}
-
+	// TODO переместить логику в слой сервиса
 	user := models.User{
 		Username: input.Username,
 		Password: input.Password,

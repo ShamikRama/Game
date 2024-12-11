@@ -6,3 +6,8 @@ type User struct {
 	Password string
 	Points   int
 }
+
+type UserInfo struct {
+	Username string `json:"username"`
+	Points   int    `json:"points"`
+}
