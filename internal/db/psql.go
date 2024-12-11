@@ -11,7 +11,8 @@ import (
 func New(cfg config.Config) (*sql.DB, error) {
 	const op = "storage.psql.New"
 
-	connStr := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
+	// Используем формат postgres://
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.DBName)
 
 	db, err := sql.Open("postgres", connStr)

@@ -1,3 +1,1 @@
--- Down migration
-
-DROP TABLE user;
+DROP TABLE users;

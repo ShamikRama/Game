@@ -45,10 +45,11 @@ func generatePasswordHash(password string) string {
 }
 
 func (r *AuthService) GenerateJwtToken(username string, password string) (string, error) {
-	user, err := r.repo.GetUser(username, password)
+	user, err := r.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return "", err
 	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),

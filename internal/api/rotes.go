@@ -9,7 +9,7 @@ type Handlers struct {
 	services *service.Service
 }
 
-func NewHadlers(services *service.Service) *Handlers {
+func NewHandlers(services *service.Service) *Handlers {
 	return &Handlers{
 		services: services,
 	}
@@ -24,10 +24,16 @@ func (h *Handlers) InitRoutes() *gin.Engine {
 		auth.POST("/sign-in", h.SignIn)
 	}
 
-	//api := router.Group("/api", h.UserIdentity)
-	//{
-	//
-	//}
+	api := router.Group("/api", h.UserIdentity)
+	{
+		users := api.Group("/users")
+		{
+			users.GET("/:id/status", h.Status)
+			users.GET("/leaderboard", h.Leaders)
+			users.POST("/:id/task/complete")
+			users.POST("/:id/referrer")
+		}
+	}
 
 	return router
 }

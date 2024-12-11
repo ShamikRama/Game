@@ -18,7 +18,7 @@ func NewAuthPsql(db *sql.DB) *AuthPsql {
 }
 
 const (
-	userTable = "user"
+	userTable = "users"
 )
 
 func (r *AuthPsql) Create(user models.User) (int, error) {

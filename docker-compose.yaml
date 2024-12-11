@@ -12,16 +12,16 @@ services:
       - "5437:5432"
 
   app:
-    image: myapp:latest  # Исправлено: теперь используется имя образа, созданного через Dockerfile
+    image: myapp:latest
     container_name: myapp
     depends_on:
       - db
     volumes:
-      - ./config/config.yaml:/app/config/config.yaml  # Монтируем config.yaml в контейнер
+      - ./config/local.yaml:/app/config/local.yaml  # Монтируем config.yaml в контейнер
       - ./internal/migrations:/app/migrations  # Монтируем папку с миграциями
     environment:
-      CONFIG_PATH: /app/config/config.yaml  # Переменная окружения для указания пути к конфигу
+      CONFIG_PATH: /app/config/local.yaml  # Переменная окружения для указания пути к конфигу
     ports:
       - "8082:8082"  # Выделение порта для приложения
     command: ["./myapp"]  # Исправлено: теперь используется собранное приложение
-    entrypoint: /bin/sh -c "migrate -path /app/migrations -database postgres://task:task@db:5432/task?sslmode=disable up && ./myapp"
+    entrypoint: /bin/sh -c "sleep 10 && migrate -path /app/migrations -database postgres://task:task@db:5432/task?sslmode=disable up && ./myapp"
