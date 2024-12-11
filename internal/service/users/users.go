@@ -19,8 +19,20 @@ func (r *UserService) GetUserStatus(userID int) (models.User, error) {
 	return r.repo.GetUser(userID)
 }
 
-func (r *UserService) GetUsersLeaders() ([]models.User, error) {
-	return r.repo.GetLeaders()
+func (r *UserService) GetUsersLeaders() ([]models.UserInfo, error) {
+	leaders, err := r.repo.GetLeaders()
+	if err != nil {
+		return nil, err
+	}
+	info := make([]models.UserInfo, 0, 5)
+	for _, user := range leaders {
+		info = append(info, models.UserInfo{
+			Username: user.Username,
+			Points:   user.Points,
+		})
+	}
+
+	return info, nil
 }
 
 // TODO func (r *UserService) TaskTelegram()

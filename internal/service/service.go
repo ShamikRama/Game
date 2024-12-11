@@ -20,12 +20,12 @@ func NewService(repo *repository.Repository) *Service {
 }
 
 type Authorization interface {
-	Create(user models.User) (int, error)
+	Create(input models.Login) (int, error)
 	GenerateJwtToken(username string, password string) (string, error)
 	ParseToken(accessToken string) (int, error)
 }
 
 type User interface {
 	GetUserStatus(userId int) (models.User, error)
-	GetUsersLeaders() ([]models.User, error)
+	GetUsersLeaders() ([]models.UserInfo, error)
 }

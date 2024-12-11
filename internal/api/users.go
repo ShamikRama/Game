@@ -1,7 +1,6 @@
 package api
 
 import (
-	"Game/internal/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -28,14 +27,6 @@ func (h *Handlers) Leaders(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	// TODO переместить логику в слой сервиса
-	info := make([]models.UserInfo, 0, 5)
-	for _, user := range leaders {
-		info = append(info, models.UserInfo{
-			Username: user.Username,
-			Points:   user.Points,
-		})
-	}
 
-	c.JSON(http.StatusOK, info)
+	c.JSON(http.StatusOK, leaders)
 }

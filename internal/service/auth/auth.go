@@ -33,8 +33,14 @@ func NewAuthorizationService(repo repository.Authorization) *AuthService {
 	}
 }
 
-func (r *AuthService) Create(user models.User) (int, error) {
+func (r *AuthService) Create(input models.Login) (int, error) {
+	user := models.User{
+		Username: input.Username,
+		Password: input.Password,
+	}
+
 	user.Password = generatePasswordHash(user.Password)
+
 	return r.repo.Create(user)
 }
 
