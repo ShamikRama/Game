@@ -20,6 +20,9 @@ COPY internal/ ./internal/
 # Копируем конфигурационные файлы
 COPY config/ ./config/
 
+# Копируем содержимое папки pkg/ в рабочую директорию
+COPY pkg/ ./pkg/
+
 # Собираем приложение
 RUN go build -o myapp ./cmd/
 

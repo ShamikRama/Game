@@ -33,6 +33,7 @@ func NewAuthorizationService(repo repository.Authorization) *AuthService {
 	}
 }
 
+// TODO cделать отдельную функцию конвертер
 func (r *AuthService) Create(input models.Login) (int, error) {
 	user := models.User{
 		Username: input.Username,

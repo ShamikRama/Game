@@ -19,6 +19,7 @@ func (r *UserService) GetUserStatus(userID int) (models.User, error) {
 	return r.repo.GetUser(userID)
 }
 
+// TODO cделать отдельную функцию конвертер
 func (r *UserService) GetUsersLeaders() ([]models.UserInfo, error) {
 	leaders, err := r.repo.GetLeaders()
 	if err != nil {
