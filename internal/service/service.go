@@ -4,18 +4,21 @@ import (
 	"Game/internal/models"
 	"Game/internal/repository"
 	"Game/internal/service/auth"
+	"Game/internal/service/task"
 	"Game/internal/service/users"
 )
 
 type Service struct {
 	Authorization
 	User
+	Task
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: auth.NewAuthorizationService(repo.Authorization),
 		User:          users.NewUsersService(repo.User),
+		Task:          task.NewTaskService(repo.Task),
 	}
 }
 
@@ -28,4 +31,8 @@ type Authorization interface {
 type User interface {
 	GetUserStatus(userId int) (models.User, error)
 	GetUsersLeaders() ([]models.UserInfo, error)
+}
+
+type Task interface {
+	CompleteTaskTelegram(userID int) error
 }

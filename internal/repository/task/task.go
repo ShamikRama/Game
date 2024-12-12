@@ -35,7 +35,7 @@ func (r *TaskPsql) CompleteTask(userID int, goal_type string) error {
 func (r *TaskPsql) UpdatePoints(userID int, pointAdd int) error {
 	const op = "sql.Task.UpdatePoints"
 
-	query := fmt.Sprintf("UDATE %s SET points = points + $1 WHERE user_id = $2", userTable)
+	query := fmt.Sprintf("UPDATE %s SET points = points + $1 WHERE id = $2", userTable)
 	_, err := r.db.Exec(query, pointAdd, userID)
 	if err != nil {
 		return fmt.Errorf("%s: failed to complete task: %w", op, err)

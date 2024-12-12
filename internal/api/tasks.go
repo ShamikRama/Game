@@ -12,4 +12,13 @@ func (h *Handlers) CompleteTaskTelegram(c *gin.Context) {
 		return
 	}
 
+	err = h.services.CompleteTaskTelegram(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"task": "telegram",
+	})
 }
