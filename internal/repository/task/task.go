@@ -8,6 +8,7 @@ import (
 const (
 	taskTable = "tasks"
 	userTable = "users"
+	refTable  = "referrals"
 )
 
 type TaskPsql struct {
@@ -37,6 +38,18 @@ func (r *TaskPsql) UpdatePoints(userID int, pointAdd int) error {
 
 	query := fmt.Sprintf("UPDATE %s SET points = points + $1 WHERE id = $2", userTable)
 	_, err := r.db.Exec(query, pointAdd, userID)
+	if err != nil {
+		return fmt.Errorf("%s: failed to complete task: %w", op, err)
+	}
+
+	return nil
+}
+
+func (r *TaskPsql) CompleteRef(userID int, referrerID int) error {
+	const op = "sql.Task.Complete"
+
+	query := fmt.Sprintf("INSERT INTO %s (user_id, referrer_id) VALUES ($1, $2)", refTable)
+	_, err := r.db.Exec(query, userID, referrerID)
 	if err != nil {
 		return fmt.Errorf("%s: failed to complete task: %w", op, err)
 	}

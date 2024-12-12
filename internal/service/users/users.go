@@ -16,8 +16,13 @@ func NewUsersService(repo repository.User) *UserService {
 	}
 }
 
-func (r *UserService) GetUserStatus(userID int) (models.User, error) {
-	return r.repo.GetUser(userID)
+func (r *UserService) GetUserStatus(userID int) (models.UserFullInfo, error) {
+	userId, err := r.repo.GetUser(userID)
+	if err != nil {
+		return models.UserFullInfo{}, err
+	}
+	info := utils.StatusConverter(userId)
+	return info, nil
 }
 
 func (r *UserService) GetUsersLeaders() ([]models.UserInfo, error) {
@@ -29,7 +34,3 @@ func (r *UserService) GetUsersLeaders() ([]models.UserInfo, error) {
 
 	return info, nil
 }
-
-// TODO func (r *UserService) TaskTelegram()
-
-// TODO func (r *UserService) TaskReferal()

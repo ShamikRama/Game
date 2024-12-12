@@ -19,3 +19,11 @@ func UserConverter(users []models.User) []models.UserInfo {
 	}
 	return info
 }
+
+func StatusConverter(user models.User) models.UserFullInfo {
+	return models.UserFullInfo{
+		Id:       user.Id,
+		Username: user.Username,
+		Points:   user.Points,
+	}
+}

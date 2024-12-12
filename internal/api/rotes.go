@@ -31,7 +31,7 @@ func (h *Handlers) InitRoutes() *gin.Engine {
 			users.GET("/:id/status", h.Status)
 			users.GET("/leaderboard", h.Leaders)
 			users.POST("/:id/task/complete", h.CompleteTaskTelegram)
-			users.POST("/:id/referrer")
+			users.POST("/:id/referrer", h.ReferralCode)
 		}
 	}
 

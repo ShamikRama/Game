@@ -11,3 +11,9 @@ type UserInfo struct {
 	Username string `json:"username"`
 	Points   int    `json:"points"`
 }
+
+type UserFullInfo struct {
+	Id       int    `json:"user_id"`
+	Username string `json:"username"`
+	Points   int    `json:"points"`
+}

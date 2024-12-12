@@ -29,10 +29,11 @@ type Authorization interface {
 }
 
 type User interface {
-	GetUserStatus(userId int) (models.User, error)
+	GetUserStatus(userId int) (models.UserFullInfo, error)
 	GetUsersLeaders() ([]models.UserInfo, error)
 }
 
 type Task interface {
 	CompleteTaskTelegram(userID int) error
+	EnterRefCode(userID int, referrerID int) error
 }

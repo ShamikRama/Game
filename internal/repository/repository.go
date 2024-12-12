@@ -35,4 +35,5 @@ type User interface {
 type Task interface {
 	CompleteTask(userID int, goal_type string) error
 	UpdatePoints(userID int, pointAdd int) error
+	CompleteRef(userID int, referrerID int) error
 }
