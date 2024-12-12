@@ -3,6 +3,7 @@ package users
 import (
 	"Game/internal/models"
 	"Game/internal/repository"
+	"Game/pkg/utils"
 )
 
 type UserService struct {
@@ -19,19 +20,12 @@ func (r *UserService) GetUserStatus(userID int) (models.User, error) {
 	return r.repo.GetUser(userID)
 }
 
-// TODO cделать отдельную функцию конвертер
 func (r *UserService) GetUsersLeaders() ([]models.UserInfo, error) {
 	leaders, err := r.repo.GetLeaders()
 	if err != nil {
 		return nil, err
 	}
-	info := make([]models.UserInfo, 0, 5)
-	for _, user := range leaders {
-		info = append(info, models.UserInfo{
-			Username: user.Username,
-			Points:   user.Points,
-		})
-	}
+	info := utils.UserConverter(leaders)
 
 	return info, nil
 }

@@ -3,6 +3,7 @@ package auth
 import (
 	"Game/internal/models"
 	"Game/internal/repository"
+	"Game/pkg/utils"
 	"crypto/sha1"
 	"errors"
 	"fmt"
@@ -33,12 +34,8 @@ func NewAuthorizationService(repo repository.Authorization) *AuthService {
 	}
 }
 
-// TODO cделать отдельную функцию конвертер
 func (r *AuthService) Create(input models.Login) (int, error) {
-	user := models.User{
-		Username: input.Username,
-		Password: input.Password,
-	}
+	user := utils.LoginConvert(input)
 
 	user.Password = generatePasswordHash(user.Password)
 
