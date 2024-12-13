@@ -4,6 +4,7 @@ import (
 	"Game/internal/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func (h *Handlers) SignUp(c *gin.Context) {
@@ -15,6 +16,10 @@ func (h *Handlers) SignUp(c *gin.Context) {
 	}
 	id, err := h.services.Create(input)
 	if err != nil {
+		if strings.Contains(err.Error(), "username already exists") {
+			newErrorResponse(c, http.StatusConflict, "username already exists")
+			return
+		}
 		newErrorResponse(c, http.StatusInternalServerError, "internal error")
 		return
 	}

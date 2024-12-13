@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt"
+	"strings"
 	"time"
 )
 
@@ -39,7 +40,14 @@ func (r *AuthService) Create(input models.Login) (int, error) {
 
 	user.Password = generatePasswordHash(user.Password)
 
-	return r.repo.Create(user)
+	userId, err := r.repo.Create(user)
+	if err != nil {
+		if strings.Contains(err.Error(), "username already exists") {
+			return 0, fmt.Errorf("username already exists")
+		}
+		return 0, err
+	}
+	return userId, nil
 }
 
 func generatePasswordHash(password string) string {

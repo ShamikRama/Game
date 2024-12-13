@@ -24,22 +24,26 @@ const (
 func (r *AuthPsql) Create(user models.User) (int, error) {
 	const op = "sql.Auth.CreateUser"
 
+	tx, err := r.db.Begin() // Начать транзакцию
+	if err != nil {
+		return 0, fmt.Errorf("%s: failed to begin transaction: %w", op, err)
+	}
+
 	query := fmt.Sprintf("INSERT INTO %s (username, password_hash) VALUES($1, $2) RETURNING id", userTable)
 
-	stmt, err := r.db.Prepare(query)
-	if err != nil {
-		return 0, fmt.Errorf("%s: failed to prepare statement: %w", op, err)
-	}
-	defer stmt.Close()
-
 	var id int
-
-	err = stmt.QueryRow(user.Username, user.Password).Scan(&id)
+	err = tx.QueryRow(query, user.Username, user.Password).Scan(&id)
 	if err != nil {
+		tx.Rollback() // Откатить транзакцию, если произошла ошибка
 		if strings.Contains(err.Error(), "unique constraint") {
-			return 0, fmt.Errorf("%s: username already exists: %w", op, err)
+			return 0, fmt.Errorf("%s: username already exists", op)
 		}
 		return 0, fmt.Errorf("%s: failed to execute query: %w", op, err)
+	}
+
+	err = tx.Commit() // Зафиксировать транзакцию, если все успешно
+	if err != nil {
+		return 0, fmt.Errorf("%s: failed to commit transaction: %w", op, err)
 	}
 
 	return id, nil

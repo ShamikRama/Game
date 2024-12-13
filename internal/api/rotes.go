@@ -20,8 +20,8 @@ func (h *Handlers) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/sign-up", h.SignUp)
-		auth.POST("/sign-in", h.SignIn)
+		auth.POST("/sign-up", h.SignUp) // TODO: сделать проверку на правильный запрос(ошибки нет если добавлено новове поле в запросе)
+		auth.POST("/sign-in", h.SignIn) // TODO: сделать проверку на правильный запрос(ошибки нет если добавлено новове поле в запросе)
 	}
 
 	api := router.Group("/api", h.UserIdentity)
@@ -31,7 +31,7 @@ func (h *Handlers) InitRoutes() *gin.Engine {
 			users.GET("/:id/status", h.Status)
 			users.GET("/leaderboard", h.Leaders)
 			users.POST("/:id/task/complete", h.CompleteTaskTelegram)
-			users.POST("/:id/referrer", h.ReferralCode)
+			users.POST("/:id/referrer", h.ReferralCode) // TODO: сделать проверку на то, чтобы реф можно было вводить только один раз
 		}
 	}
 

@@ -1,6 +1,9 @@
 package task
 
-import "Game/internal/repository"
+import (
+	"Game/internal/repository"
+	"fmt"
+)
 
 type TaskService struct {
 	repo repository.Task
@@ -33,7 +36,19 @@ func (r *TaskService) EnterRefCode(userID int, referrerID int) error {
 	pointsForEnterCode := 6
 	pointsForReferral := 13
 
-	err := r.repo.CompleteRef(userID, referrerID)
+	if userID == referrerID {
+		return fmt.Errorf("can not enter own ref_code")
+	}
+
+	exist, err := r.repo.UserExists(referrerID)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		return fmt.Errorf("referrer by ID not found")
+	}
+
+	err = r.repo.CompleteRef(userID, referrerID)
 	if err != nil {
 		return err
 	}

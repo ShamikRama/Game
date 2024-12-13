@@ -43,13 +43,13 @@ func main() {
 		}
 	}()
 
-	log.Error("server running")
+	log.Info("server running")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	log.Error("server stoped")
+	log.Info("server stoped")
 
 }
 
