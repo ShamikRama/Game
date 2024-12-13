@@ -3,6 +3,7 @@ package task
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 )
 
 const (
@@ -51,6 +52,9 @@ func (r *TaskPsql) CompleteRef(userID int, referrerID int) error {
 	query := fmt.Sprintf("INSERT INTO %s (user_id, referrer_id) VALUES ($1, $2)", refTable)
 	_, err := r.db.Exec(query, userID, referrerID)
 	if err != nil {
+		if strings.Contains(err.Error(), "unique constraint") {
+			return fmt.Errorf("%s: twice ref code", op)
+		}
 		return fmt.Errorf("%s: failed to complete task: %w", op, err)
 	}
 

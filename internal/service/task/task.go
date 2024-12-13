@@ -3,6 +3,7 @@ package task
 import (
 	"Game/internal/repository"
 	"fmt"
+	"strings"
 )
 
 type TaskService struct {
@@ -50,6 +51,9 @@ func (r *TaskService) EnterRefCode(userID int, referrerID int) error {
 
 	err = r.repo.CompleteRef(userID, referrerID)
 	if err != nil {
+		if strings.Contains(err.Error(), "twice ref code") {
+			return fmt.Errorf("unique constraint")
+		}
 		return err
 	}
 

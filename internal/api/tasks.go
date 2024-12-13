@@ -41,7 +41,6 @@ func (h *Handlers) ReferralCode(c *gin.Context) {
 		return
 	}
 
-	// Вызов сервиса
 	err = h.services.EnterRefCode(userId, ref.Id)
 	if err != nil {
 		log.Printf("Error entering referral code: %v", err)
@@ -55,6 +54,12 @@ func (h *Handlers) ReferralCode(c *gin.Context) {
 			newErrorResponse(c, http.StatusNotFound, "referrer not found")
 			return
 		}
+
+		if strings.Contains(err.Error(), "unique constraint") {
+			newErrorResponse(c, http.StatusConflict, "you can not add ref for user twice")
+			return
+		}
+
 		newErrorResponse(c, http.StatusInternalServerError, "server error")
 		return
 	}
